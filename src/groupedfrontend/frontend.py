@@ -1,3 +1,6 @@
+from typing import Union
+
+import numpy as np
 import torch
 import torch.nn as nn
 
