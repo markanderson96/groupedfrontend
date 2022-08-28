@@ -59,7 +59,7 @@ def gabor_filters(
     :return: kernel/filter that can be used 1D convolution as tensor
     """
     t = torch.arange(-(size // 2), (size + 1) // 2, device=center_freqs.device)
-    sigmas = (sample_rate / 2.) / bandwidths
+    sigmas = (sample_rate / 2.) / bandwidth
     denominator = 1. / (np.sqrt(2 * np.pi) * sigmas)
     gaussian = torch.exp(torch.outer(1. / (2. * sigmas**2), -t**2))
     sinusoid = torch.exp(1j * torch.outer(center_freqs, t))

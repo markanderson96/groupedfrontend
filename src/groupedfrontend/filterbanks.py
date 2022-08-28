@@ -1,5 +1,7 @@
+import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from groupedfrontend.filterparams import (filter_params, gabor_filters,
                                              gamma_filters, gauss_windows)
@@ -66,6 +68,7 @@ class GroupedFilterbank(nn.Module):
         self.filter_type = filter_type
 
         # parameter inits
+        self.sample_rate = sample_rate
         self.center_freqs, self.bandwidths = filter_params(
             n_filters,
             min_freq,
@@ -73,6 +76,8 @@ class GroupedFilterbank(nn.Module):
             sample_rate,
             filter_type=init_filter
         )
+
+        self.pooling_widths = nn.Parameter(torch.full((n_filters,), float(pool_init)))
 
     def get_stride(self, cent_freq):
         '''
