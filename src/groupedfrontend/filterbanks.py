@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from groupedfrontend.filterparams import (filter_params, gabor_filters,
-                                             gamma_filters, gauss_windows)
+from groupedfrontend.filterparams import *
+
 
 # Complex Conv with different Strides/Kernelsizes
 class GroupedFilterbank(nn.Module):
@@ -47,9 +47,9 @@ class GroupedFilterbank(nn.Module):
             sample_rate: int,
             pool_size: int,
             pool_stride: int,
-            pool_init: float=0.4,
-            conv_win_factor: float=3,
-            stride_factor: float=1.,
+            pool_init: float = 0.4,
+            conv_win_factor: float = 3,
+            stride_factor: float = 1.,
             filter_type: str = 'gabor',
             init_filter: str = 'mel'
     ):

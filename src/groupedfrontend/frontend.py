@@ -34,18 +34,19 @@ class GroupedFrontend(nn.Module):
     :param compression: compression function used: 'pcen', 'logtbn'
                         or a torch module (default: 'logtbn')
     """
+
     def __init__(
             self,
-            n_filters: int=40,
-            num_groups: int=4,
-            min_freq: float=60.0,
-            max_freq: float=7800.0,
-            sample_rate: int=16000,
-            window_len: float=25.,
-            window_stride: float=10.,
-            conv_win_factor: float=4.77,
-            stride_factor: float=1.,
-            compression: Union[str, torch.nn.Module]=None,
+            n_filters: int = 40,
+            num_groups: int = 4,
+            min_freq: float = 60.0,
+            max_freq: float = 7800.0,
+            sample_rate: int = 16000,
+            window_len: float = 25.,
+            window_stride: float = 10.,
+            conv_win_factor: float = 4.77,
+            stride_factor: float = 1.,
+            compression: Union[str, torch.nn.Module] = None,
             filter_type: str = 'gabor',
             init_filter: str = 'mel'
     ):
@@ -92,7 +93,7 @@ class GroupedFrontend(nn.Module):
             )
         elif isinstance(compression, torch.nn.Module):
             self.compression = compression
-        elif compression == None:
+        elif compression is None:
             self.compression = None
         else:
             raise ValueError("unsupported value for compression argument")
