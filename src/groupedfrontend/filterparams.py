@@ -1,9 +1,7 @@
-import math
+from typing import Optional, Union
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from typing import Optional, Union
+
 
 def filter_params(
     n_filters: int,
@@ -42,6 +40,7 @@ def filter_params(
 
     return center_freqs, bandwidths
 
+
 def gabor_filters(
     size: int,
     center_freqs: torch.Tensor,
@@ -58,12 +57,17 @@ def gabor_filters(
     :param sample_rate (optional):
     :return: kernel/filter that can be used 1D convolution as tensor
     """
-    t = torch.arange(-(size // 2), (size + 1) // 2, device=center_freqs.device)
+    time = torch.arange(
+        -(size // 2),
+        (size + 1) // 2,
+        device=center_freqs.device
+    )
     sigmas = (sample_rate / 2.) / bandwidth
     denominator = 1. / (np.sqrt(2 * np.pi) * sigmas)
-    gaussian = torch.exp(torch.outer(1. / (2. * sigmas**2), -t**2))
-    sinusoid = torch.exp(1j * torch.outer(center_freqs, t))
+    gaussian = torch.exp(torch.outer(1. / (2. * sigmas**2), -time**2))
+    sinusoid = torch.exp(1j * torch.outer(center_freqs, time))
     return denominator[:, np.newaxis] * sinusoid * gaussian
+
 
 def gamma_filters(
     size: int,
@@ -82,11 +86,12 @@ def gamma_filters(
     :param order: order of filter (default 4 to model human auditory system)
     :return: kernel/filter that can be used 1D convolution as tensor
     """
-    t = torch.arange(-(size // 2), (size + 1) // 2, device=center_freqs.device)
-    denominator = 1. / (np.sqrt(2 * np.pi) * sigmas)
-    gaussian = torch.exp(torch.outer(1. / (2. * sigmas**2), -t**2))
-    sinusoid = torch.exp(1j * torch.outer(center_freqs, t))
-    return denominator[:, np.newaxis] * sinusoid * gaussian
+    time = torch.arange(size, device=center_freqs.device)
+    bandwidth_w = np.pi * (bandwidth / sample_rate)
+    envelope = (time**(order - 1)) * torch.exp(-torch.outer(bandwidth_w, time))
+    carrier = torch.cos(torch.outer(center_freqs, time))
+    scale = 1. / torch.amax(envelope, dim=1)
+    return scale[:, np.newaxis] * envelope * carrier
 
 
 def gauss_windows(size: int, sigmas: torch.Tensor) -> torch.Tensor:
@@ -98,6 +103,6 @@ def gauss_windows(size: int, sigmas: torch.Tensor) -> torch.Tensor:
     :param sigmas: sigmas/bandwidths
     :return: kernel/filter that can be used 1D convolution as torch.Tensor
     """
-    t = torch.arange(0, size, device=sigmas.device)
-    numerator = t * (2 / (size - 1)) - 1
+    time = torch.arange(0, size, device=sigmas.device)
+    numerator = time * (2 / (size - 1)) - 1
     return torch.exp(-0.5 * (numerator / sigmas[:, np.newaxis])**2)
