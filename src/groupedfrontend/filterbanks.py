@@ -108,6 +108,7 @@ class GroupedFilterbank(nn.Module):
         outputs = []
         for i, (a, b) in enumerate(zip(splits[:-1], splits[1:])):
             num_group_filters = b-a
+
             # calculate strides
             conv_stride, pool_stride = self.get_stride(
                 torch.max(center_freqs[a:b].detach()).item()
