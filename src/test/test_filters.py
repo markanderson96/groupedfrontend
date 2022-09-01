@@ -1,5 +1,4 @@
 import os
-from tkinter import W
 import numpy as np
 
 #torchaudio
@@ -13,7 +12,7 @@ from groupedfrontend.frontend import GroupedFrontend
 
 import unittest
 
-class GammatoneTest(unittest.TestCase):
+class FilterTest(unittest.TestCase):
     def setUp(self):
         self.audio, self.fs = torchaudio.load("test/resources/arctic_b0041.wav")
         print("ok?!")
