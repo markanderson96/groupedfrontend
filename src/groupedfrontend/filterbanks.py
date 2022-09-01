@@ -131,8 +131,8 @@ class GroupedFilterbank(nn.Module):
             elif self.filter_type == 'gammatone':
                 kernel = gamma_filters(
                     kernel_size,
-                    center_freqs,
-                    bandwidths,
+                    center_freqs[a:b],
+                    bandwidths[a:b],
                     sample_rate=self.sample_rate
                 )
             else:
