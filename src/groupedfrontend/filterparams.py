@@ -89,7 +89,7 @@ def gamma_filters(
     time = torch.arange(size, device=center_freqs.device)
     bandwidth_w = np.pi * (bandwidth / sample_rate)
     envelope = (time**(order - 1)) * torch.exp(-torch.outer(bandwidth_w, time))
-    carrier = torch.cos(torch.outer(center_freqs, time))
+    carrier = torch.exp(1j * torch.outer(center_freqs, time))
     scale = 1. / torch.amax(envelope, dim=1)
     return scale[:, np.newaxis] * envelope * carrier
 
