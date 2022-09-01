@@ -1,4 +1,5 @@
-from typing import Optional, Union
+import math
+from typing import Optional, Union, Tuple
 import numpy as np
 import torch
 
@@ -9,7 +10,7 @@ def filter_params(
     max_freq: float,
     sample_rate: int = 16000,
     filter_type: str = 'mel',
-) -> (torch.Tensor, torch.Tensor):
+) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Analytically calculates the center frequencies
     and sigmas of a selectable filter bank
@@ -90,7 +91,10 @@ def gamma_filters(
     bandwidth_w = np.pi * (bandwidth / sample_rate)
     envelope = (time**(order - 1)) * torch.exp(-torch.outer(bandwidth_w, time))
     carrier = torch.exp(1j * torch.outer(center_freqs, time))
-    scale = 1. / torch.amax(envelope, dim=1)
+    scale = 1. / torch.amax(envelope, dim=-1)
+    # scale = torch.ones_like(envelope) * 2. * bandwidth_w ** order
+    # scale /= float(math.factorial(order - 1))
+    # scale /= sample_rate
     return scale[:, np.newaxis] * envelope * carrier
 
 
