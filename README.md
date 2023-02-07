@@ -7,6 +7,7 @@ Also includes various initialisations such as:
 - Linear
 
 ## Requirements
+
 Requires:
 - PyTorch
 - Numpy
@@ -20,8 +21,8 @@ Import the frontend
 from groupedfrontend.frontend import GroupedFrontend
 ```
 
-And then add it as a layer to your model. 
-For example to use: 
+And then add it as a layer to your model.
+For example to use:
 - 40 filters
 - Low frequency cut off of 80Hz
 - Sample rate of 16KHz
@@ -38,4 +39,3 @@ frontend = GroupedFrontend(
     init_filter='bark'
 )
 ```
-
