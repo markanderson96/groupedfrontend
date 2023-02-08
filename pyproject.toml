@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "groupedfrontend"
-version = "0.0.1"
+version = "0.1"
 authors = [
   { name="Mark Anderson", email="andersm3@tcd.ie" },
 ]
