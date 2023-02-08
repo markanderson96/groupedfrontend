@@ -1,7 +1,7 @@
 # GroupedFrontend
 
-A reimplementation of the grouped filterbanks of EfficientLEAF, but non-learnable and with the addition of using gammatone filterbanks alongside gabor.
-Also includes various initialisations such as:
+A reimplementation of the grouped filterbanks of [EfficientLEAF](https://github.com/CPJKU/EfficientLEAF), but non-learnable and with the addition of using gammatone filterbanks alongside gabor.
+Also includes various filterbank initialisations such as:
 - Mel
 - Bark
 - Linear
@@ -13,6 +13,7 @@ Requires:
 - Numpy
 
 ## Usage
+
 Can be installed in a conda environment or just included as part of the source.
 
 Import the frontend
@@ -38,4 +39,16 @@ frontend = GroupedFrontend(
     compression=None,
     init_filter='bark'
 )
+```
+
+## Citation
+
+Please cite the EfficientLEAF paper if you use this repository in a publication:
+```
+@INPROCEEDINGS{2022eleaf,
+author={Schl{\"u}ter, Jan and Gutenbrunner, Gerald},
+  booktitle={Proceedings of the 30th European Signal Processing Conference (EUSIPCO)},
+  title={{EfficientLEAF}: A Faster {LEarnable} Audio Frontend of Questionable Use},
+  year=2022,
+  month=sep}
 ```
